@@ -4,13 +4,15 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "jest"
+    "test": "jest",
+    "test:staged": "jest"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "git-commit-msg-linter": "^4.2.1"
+    "git-commit-msg-linter": "^4.2.1",
+    "ts-node": "^10.9.1"
   },
   "devDependencies": {
     "@types/jest": "^29.2.3",
