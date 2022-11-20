@@ -31,7 +31,7 @@ describe('SignUp Controller', () => {
     const { sut } = makeSut()
     const httpRequest = {
       body: {
-        email: 'jack@email.com',
+        email: 'any@email.com',
         password: '123',
         passwordConfirmation: '123'
       }
@@ -45,7 +45,7 @@ describe('SignUp Controller', () => {
     const { sut } = makeSut()
     const httpRequest = {
       body: {
-        name: 'jack',
+        name: 'any',
         password: '123',
         passwordConfirmation: '123'
       }
@@ -59,8 +59,8 @@ describe('SignUp Controller', () => {
     const { sut } = makeSut()
     const httpRequest = {
       body: {
-        name: 'jack',
-        email: 'jack@email.com',
+        name: 'any',
+        email: 'any@email.com',
         passwordConfirmation: '123'
       }
     }
@@ -69,13 +69,28 @@ describe('SignUp Controller', () => {
     expect(httpResponse.body).toEqual(new MissingParamError('password'))
   })
 
+  test('Should return 400 if password confimation failed', () => {
+    const { sut } = makeSut()
+    const httpRequest = {
+      body: {
+        name: 'any',
+        email: 'any@email.com',
+        password: '123',
+        passwordConfirmation: 'invalid_password'
+      }
+    }
+    const httpResponse = sut.handle(httpRequest)
+    expect(httpResponse.statusCode).toBe(400)
+    expect(httpResponse.body).toEqual(new InvalidParamError('passwordConfirmation'))
+  })
+
   test('Should return 400 if no password confirmation is provided', () => {
     const { sut } = makeSut()
     const httpRequest = {
       body: {
-        name: 'jack',
+        name: 'any',
         password: '123',
-        email: 'jack@email.com'
+        email: 'any@email.com'
       }
     }
     const httpResponse = sut.handle(httpRequest)
@@ -88,9 +103,9 @@ describe('SignUp Controller', () => {
     jest.spyOn(emailValidatorStub, 'isValid').mockReturnValueOnce(false)
     const httpRequest = {
       body: {
-        name: 'jack',
+        name: 'any',
         password: '123',
-        email: 'jack@email.com',
+        email: 'any@email.com',
         passwordConfirmation: '123'
       }
     }
@@ -104,14 +119,14 @@ describe('SignUp Controller', () => {
     const isValidSpy = jest.spyOn(emailValidatorStub, 'isValid')
     const httpRequest = {
       body: {
-        name: 'jack',
+        name: 'any',
         password: '123',
-        email: 'jack@email.com',
+        email: 'any@email.com',
         passwordConfirmation: '123'
       }
     }
     sut.handle(httpRequest)
-    expect(isValidSpy).toHaveBeenCalledWith('jack@email.com')
+    expect(isValidSpy).toHaveBeenCalledWith('any@email.com')
   })
 
   test('Should return 500 if EmailValidator throws', () => {
@@ -119,9 +134,9 @@ describe('SignUp Controller', () => {
     jest.spyOn(emailValidatorStub, 'isValid').mockImplementationOnce(() => { throw new Error() })
     const httpRequest = {
       body: {
-        name: 'jack',
+        name: 'any',
         password: '123',
-        email: 'jack@email.com',
+        email: 'any@email.com',
         passwordConfirmation: '123'
       }
     }
