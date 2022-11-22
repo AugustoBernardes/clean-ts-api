@@ -7,6 +7,7 @@ export default {
   coverageDirectory: 'coverage',
   coverageProvider: 'v8',
   testEnvironment: 'node',
+  testMatch: ['**/*.spec.ts'],
   transform: {
     '.+\\.ts$': 'ts-jest'
   }
