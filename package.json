@@ -15,11 +15,13 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "bcrypt": "^5.1.0",
     "git-commit-msg-linter": "^4.2.1",
     "ts-node": "^10.9.1",
     "validator": "^13.7.0"
   },
   "devDependencies": {
+    "@types/bcrypt": "^5.0.0",
     "@types/jest": "^29.2.3",
     "@types/node": "^18.11.9",
     "@types/validator": "^13.7.10",
