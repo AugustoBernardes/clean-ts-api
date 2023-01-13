@@ -10,4 +10,13 @@ export class AccountMongoRepository implements IAddAccountRepository {
 
     return result
   }
+
+  async findById (id: string): Promise<any> {
+    const accountCollection = await MongoHelper.getCollection('accounts')
+    const result = await accountCollection.findOne({
+      _id: id
+    })
+
+    return result
+  }
 }

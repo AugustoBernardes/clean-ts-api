@@ -1,6 +1,11 @@
 export interface IAccountModel {
-  id: string
+  _id: string
   name: string
   email: string
   password: string
+}
+
+export interface IAddAccountResponse {
+  acknowledged: boolean
+  insertedId: string
 }

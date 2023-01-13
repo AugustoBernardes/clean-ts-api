@@ -1,4 +1,4 @@
-import { IAccountModel, IAddAccountModel, IEncrypter, IAddAccountRepository } from './db-add-account-protocols'
+import { IAccountModel, IAddAccountModel, IEncrypter, IAddAccountRepository, IAddAccountResponse } from './db-add-account-protocols'
 import { DbAddAccount } from './db-add-account'
 
 const makeEncypter = (): IEncrypter => {
@@ -13,13 +13,22 @@ const makeEncypter = (): IEncrypter => {
 
 const makeAddAccountRepository = (): IAddAccountRepository => {
   class AddAccountRepositoryStub implements IAddAccountRepository {
-    async add (accountData: IAddAccountModel): Promise<IAccountModel> {
+    async add (accountData: IAddAccountModel): Promise<IAddAccountResponse> {
       const fakeAccount = {
-        id: 'valid_id',
+        acknowledged: true,
+        insertedId: 'valid_id'
+      }
+      return await new Promise(resolve => resolve(fakeAccount))
+    }
+
+    async findById (id: string): Promise<IAccountModel> {
+      const fakeAccount = {
+        _id: 'valid_id',
         name: 'valid_name',
         email: 'valid_email@gmail.com',
         password: 'hashed_password'
       }
+
       return await new Promise(resolve => resolve(fakeAccount))
     }
   }
@@ -115,7 +124,7 @@ describe('DbAddAccount Usecase', () => {
 
     const account = await sut.add(accountData)
     expect(account).toEqual({
-      id: 'valid_id',
+      _id: 'valid_id',
       name: 'valid_name',
       email: 'valid_email@gmail.com',
       password: 'hashed_password'
