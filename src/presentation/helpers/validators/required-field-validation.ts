@@ -5,6 +5,7 @@ export class RequiredFieldValidation implements IValidation {
   constructor (private readonly fieldName: string) {}
   validate (input: any): Error | null {
     if (!input[this.fieldName]) {
+      console.log('MissingParamError: ', this.fieldName)
       return new MissingParamError(this.fieldName)
     }
 
