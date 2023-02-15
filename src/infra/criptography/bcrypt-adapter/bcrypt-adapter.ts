@@ -1,5 +1,5 @@
-import { IHasher } from '../../data/protocols/criptography/hasher'
-import { IHashCompare } from '../../data/protocols/criptography/hash-compare'
+import { IHasher } from '../../../data/protocols/criptography/hasher'
+import { IHashCompare } from '../../../data/protocols/criptography/hash-compare'
 
 import bcrypt from 'bcrypt'
 
