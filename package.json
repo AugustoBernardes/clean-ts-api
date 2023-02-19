@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "node dist/src/main/server.js",
+    "start": "node dist/main/server.js",
     "dev":"sucrase-node src/main/server.ts",
     "build":"tsc --build",
     "test": "jest --passWithNoTests --silent --noStackTrace --runInBand --forceExit",
