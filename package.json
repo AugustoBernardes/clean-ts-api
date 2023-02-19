@@ -4,7 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "sucrase-node src/main/server.ts",
+    "start": "node dist/src/main/server.js",
+    "dev":"sucrase-node src/main/server.ts",
+    "build":"tsc --build",
     "test": "jest --passWithNoTests --silent --noStackTrace --runInBand --forceExit",
     "test:verbose": "jest --passWithNoTests --runInBand",
     "test:integration": "npm test -- --watch -c jest-integration-config.ts",
@@ -19,7 +21,6 @@
     "bcrypt": "^5.1.0",
     "dotenv": "^16.0.3",
     "express": "^4.18.2",
-    "fast-glob": "^3.2.12",
     "git-commit-msg-linter": "^4.2.1",
     "jsonwebtoken": "^9.0.0",
     "mongodb": "^4.12.1",
