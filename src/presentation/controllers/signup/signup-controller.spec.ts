@@ -1,7 +1,7 @@
 
 import { SignUpController } from './signup-controller'
 import { MissingParamError, ServerError } from '../../errors'
-import { IAccountModel, IAddAccount, IAddAccountModel, IHttpRequest, IValidation } from './signup-controller-protocols'
+import { IAccountModel, IAddAccount, IAddAccountModel, IHttpRequest, IValidation, AuthenticationModel, IAuthentication } from './signup-controller-protocols'
 import { badRequest, ok, serverError } from '../../helpers/http/http-helper'
 
 const makeAddAccount = (): IAddAccount => {
@@ -11,6 +11,15 @@ const makeAddAccount = (): IAddAccount => {
     }
   }
   return new AddAccountStub()
+}
+
+const makeAuthentication = (): IAuthentication => {
+  class AuthenticationStub implements IAuthentication {
+    async auth (authentication: AuthenticationModel): Promise<string> {
+      return 'any_token'
+    }
+  }
+  return new AuthenticationStub()
 }
 
 const makeValidation = (): IValidation => {
@@ -32,9 +41,9 @@ const makeFakeAccount = (): IAccountModel => ({
 const makeFakeRequest = (): IHttpRequest => ({
   body: {
     name: 'any',
-    password: '123',
-    email: 'any@email.com',
-    passwordConfirmation: '123'
+    password: 'any_password',
+    email: 'any_email@mail.com',
+    passwordConfirmation: 'any_password'
   }
 })
 
@@ -42,21 +51,42 @@ interface SutTypes {
   sut: SignUpController
   addAccountStub: IAddAccount
   validationStub: IValidation
+  authenticationStub: IAuthentication
 }
 
 const makeSut = (): SutTypes => {
   const addAccountStub = makeAddAccount()
   const validationStub = makeValidation()
-  const sut = new SignUpController(addAccountStub, validationStub)
+  const authenticationStub = makeAuthentication()
+  const sut = new SignUpController(addAccountStub, validationStub, authenticationStub)
 
   return {
     sut,
     addAccountStub,
-    validationStub
+    validationStub,
+    authenticationStub
   }
 }
 
 describe('SignUp Controller', () => {
+  test('Should call Authentication with correct values', async () => {
+    const { sut, authenticationStub } = makeSut()
+    const authSpy = jest.spyOn(authenticationStub, 'auth')
+
+    await sut.handle(makeFakeRequest())
+    expect(authSpy).toBeCalledWith({ email: 'any_email@mail.com', password: 'any_password' })
+  })
+
+  test('Should return 500 if Authentication throws', async () => {
+    const { sut, authenticationStub } = makeSut()
+    jest.spyOn(authenticationStub, 'auth').mockImplementationOnce(() => {
+      throw new Error()
+    })
+
+    const httpResponse = await sut.handle(makeFakeRequest())
+    expect(httpResponse).toEqual(serverError(new Error()))
+  })
+
   test('Should call AddAccount with correct values', async () => {
     const { sut, addAccountStub } = makeSut()
     const addSpy = jest.spyOn(addAccountStub, 'add')
@@ -64,8 +94,8 @@ describe('SignUp Controller', () => {
     await sut.handle(makeFakeRequest())
     expect(addSpy).toHaveBeenCalledWith({
       name: 'any',
-      password: '123',
-      email: 'any@email.com'
+      password: 'any_password',
+      email: 'any_email@mail.com'
     })
   })
 
