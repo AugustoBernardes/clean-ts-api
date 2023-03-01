@@ -1,11 +1,11 @@
-import { LoadAccountByToken } from '../../domain/usecases/load-account-by-token'
+import { ILoadAccountByToken } from '../../domain/usecases/load-account-by-token'
 import { AccessDeniedError } from '../errors'
 import { forbidden } from '../helpers/http/http-helper'
 import { IHttpRequest, IHttpResponse, Middleware } from '../protocols'
 
 export class AuthMiddleware implements Middleware {
   constructor (
-    private readonly loadAccountByToken: LoadAccountByToken
+    private readonly loadAccountByToken: ILoadAccountByToken
   ) {}
 
   async handle (httpRequest: IHttpRequest): Promise<IHttpResponse> {

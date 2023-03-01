@@ -1,5 +1,5 @@
 import { IAccountModel } from '../models/account'
 
-export interface LoadAccountByToken {
+export interface ILoadAccountByToken {
   load: (accessToken: string, role?: string) => Promise<IAccountModel | null>
 }

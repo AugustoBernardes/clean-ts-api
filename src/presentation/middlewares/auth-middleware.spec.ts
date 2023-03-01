@@ -1,7 +1,7 @@
 import { AuthMiddleware } from './auth-middleware'
 import { forbidden } from '../helpers/http/http-helper'
 import { AccessDeniedError } from '../errors'
-import { LoadAccountByToken } from '../../domain/usecases/load-account-by-token'
+import { ILoadAccountByToken } from '../../domain/usecases/load-account-by-token'
 import { IAccountModel } from '../../domain/models/account'
 
 const makeFakeAccount = (): IAccountModel => ({
@@ -9,31 +9,42 @@ const makeFakeAccount = (): IAccountModel => ({
   name: 'valid_name',
   email: 'valid_email@mail.com',
   password: 'hashed_password'
+})
+interface SutTypes {
+  sut: AuthMiddleware
+  loadAccountByTokenStub: ILoadAccountByToken
 }
-)
+
+const makeLoadAccountByToken = (): ILoadAccountByToken => {
+  class LoadAccoutByTokenStub implements ILoadAccountByToken {
+    async load (accessToken: string, role?: string | undefined): Promise<IAccountModel | null> {
+      return makeFakeAccount()
+    }
+  }
+
+  return new LoadAccoutByTokenStub()
+}
+
+const makeSut = (): SutTypes => {
+  const loadAccountByTokenStub = makeLoadAccountByToken()
+  const sut = new AuthMiddleware(loadAccountByTokenStub)
+
+  return {
+    sut,
+    loadAccountByTokenStub
+  }
+}
 
 describe('Auth Middleware', () => {
   test('Should return 403 if no x-access-token is exists in headers', async () => {
-    class LoadAccoutByTokenStub implements LoadAccountByToken {
-      async load (accessToken: string, role?: string | undefined): Promise<IAccountModel | null> {
-        return makeFakeAccount()
-      }
-    }
-    const loadAccoutByTokenStub = new LoadAccoutByTokenStub()
-    const sut = new AuthMiddleware(loadAccoutByTokenStub)
+    const { sut } = makeSut()
     const httpResponse = await sut.handle({})
     expect(httpResponse).toEqual(forbidden(new AccessDeniedError()))
   })
 
   test('Should call LoadAccoutByToken with correct accessToken', async () => {
-    class LoadAccoutByTokenStub implements LoadAccountByToken {
-      async load (accessToken: string, role?: string | undefined): Promise<IAccountModel | null> {
-        return makeFakeAccount()
-      }
-    }
-    const loadAccoutByTokenStub = new LoadAccoutByTokenStub()
-    const loadSpy = jest.spyOn(loadAccoutByTokenStub, 'load')
-    const sut = new AuthMiddleware(loadAccoutByTokenStub)
+    const { sut, loadAccountByTokenStub } = makeSut()
+    const loadSpy = jest.spyOn(loadAccountByTokenStub, 'load')
     await sut.handle({
       headers: {
         'x-access-token': 'any_token'
