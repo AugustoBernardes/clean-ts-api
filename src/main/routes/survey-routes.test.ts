@@ -6,6 +6,28 @@ import app from '../config/app'
 import { sign } from 'jsonwebtoken'
 import env from '../config/env'
 
+const makeAccessToken = async (): Promise<string> => {
+  const password = await hash('123', 12)
+  const res = await accountCollection.insertOne({
+    name: 'John Doe',
+    email: 'john@email.com',
+    role: 'admin',
+    password
+  })
+  const id = res.insertedId
+  const accessToken = sign({
+    id
+  }, env.jwtSecret)
+
+  await accountCollection.updateOne({ _id: id }, {
+    $set: {
+      accessToken
+    }
+  })
+
+  return accessToken
+}
+
 let surveyCollection: Collection
 let accountCollection: Collection
 describe('Survey Routes', () => {
@@ -41,23 +63,7 @@ describe('Survey Routes', () => {
     })
 
     test('Should return 204 on add survey with valid access token', async () => {
-      const password = await hash('123', 12)
-      const res = await accountCollection.insertOne({
-        name: 'John Doe',
-        email: 'john@email.com',
-        role: 'admin',
-        password
-      })
-      const id = res.insertedId
-      const accessToken = sign({
-        id
-      }, env.jwtSecret)
-
-      await accountCollection.updateOne({ _id: id }, {
-        $set: {
-          accessToken
-        }
-      })
+      const accessToken = await makeAccessToken()
 
       await request(app)
         .post('/api/surveys')
@@ -82,22 +88,7 @@ describe('Survey Routes', () => {
         .expect(403)
     })
     test('Should return 204 on load surveys with valid access token', async () => {
-      const password = await hash('123', 12)
-      const res = await accountCollection.insertOne({
-        name: 'John Doe',
-        email: 'john@email.com',
-        password
-      })
-      const id = res.insertedId
-      const accessToken = sign({
-        id
-      }, env.jwtSecret)
-
-      await accountCollection.updateOne({ _id: id }, {
-        $set: {
-          accessToken
-        }
-      })
+      const accessToken = await makeAccessToken()
 
       await request(app)
         .get('/api/surveys')
