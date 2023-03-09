@@ -81,5 +81,28 @@ describe('Survey Routes', () => {
         .get('/api/surveys')
         .expect(403)
     })
+    test('Should return 204 on load surveys with valid access token', async () => {
+      const password = await hash('123', 12)
+      const res = await accountCollection.insertOne({
+        name: 'John Doe',
+        email: 'john@email.com',
+        password
+      })
+      const id = res.insertedId
+      const accessToken = sign({
+        id
+      }, env.jwtSecret)
+
+      await accountCollection.updateOne({ _id: id }, {
+        $set: {
+          accessToken
+        }
+      })
+
+      await request(app)
+        .get('/api/surveys')
+        .set('x-access-token', accessToken)
+        .expect(204)
+    })
   })
 })
