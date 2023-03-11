@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-floating-promises */
-import { MongoHelper } from '../infra/db/mongodb/helpers/mongo-helper'
+import 'module-alias/register'
+import { MongoHelper } from '@/infra/db/mongodb/helpers/mongo-helper'
 import env from './config/env'
 
 MongoHelper.connect(env.mongoUrl)

@@ -1,9 +1,12 @@
 {
-    "extends":"eslint-config-standard-with-typescript",
+    "parser": "@typescript-eslint/parser",
+    "plugins": ["@typescript-eslint"],
+    "extends": ["eslint:recommended", "plugin:@typescript-eslint/recommended","eslint-config-standard-with-typescript"],
     "parserOptions":{
-        "project":"./tsconfig.eslint.json"
+        "project":"./tsconfig.json"
     },
     "rules": {
         "@typescript-eslint/strict-boolean-expressions":"off"
-    }
+    },
+    "root": true
 }

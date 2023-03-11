@@ -1,4 +1,3 @@
-
 export default {
 
   roots: ['<rootDir>/src'],
@@ -14,5 +13,9 @@ export default {
   testMatch: ['**/*.spec.ts'],
   transform: {
     '.+\\.ts$': 'ts-jest'
+  },
+  moduleNameMapper:{
+    '@/(.*)':'<rootDir>/src/$1'
   }
+
 }

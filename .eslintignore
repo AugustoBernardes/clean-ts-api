@@ -3,3 +3,7 @@ dist
 coverage
 ./data
 .vscode
+jest.config.ts
+jest-mongodb-config.js
+jest-unit-config.ts
+jest-integration-config.ts
