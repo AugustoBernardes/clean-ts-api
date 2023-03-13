@@ -9,7 +9,7 @@ const makeFakeAccount = (): IAccountModel => ({
   email: 'valid_email@mail.com',
   password: 'hashed_password'
 })
-interface SutTypes {
+type SutTypes = {
   sut: AuthMiddleware
   loadAccountByTokenStub: ILoadAccountByToken
 }
@@ -19,10 +19,6 @@ const makeFakeRequest = (): IHttpRequest => ({
     'x-access-token': 'any_token'
   }
 })
-interface SutTypes {
-  sut: AuthMiddleware
-  loadAccountByTokenStub: ILoadAccountByToken
-}
 
 const makeLoadAccountByToken = (): ILoadAccountByToken => {
   class LoadAccoutByTokenStub implements ILoadAccountByToken {

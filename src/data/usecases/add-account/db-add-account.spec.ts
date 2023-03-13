@@ -52,14 +52,14 @@ const makeFakeAccount = (): IAccountModel => ({
 }
 )
 
-interface ISutTypes {
+type SutTypes = {
   sut: DbAddAccount
   hasherStub: IHasher
   addAccountRepositoryStub: IAddAccountRepository
   loadAccountByEmailRepositoryStub: ILoadAccountByEmailRepository
 }
 
-const makeSut = (): ISutTypes => {
+const makeSut = (): SutTypes => {
   const hasherStub = makeHasher()
   const addAccountRepositoryStub = makeAddAccountRepository()
   const loadAccountByEmailRepositoryStub = makeLoadAccountByEmailRepository()

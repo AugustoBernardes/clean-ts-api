@@ -32,7 +32,7 @@ const makeValidation = (): IValidation => {
   return new ValidationStub()
 }
 
-interface SutTypes {
+type SutTypes = {
   sut: AddSurveyController
   validationStub: IValidation
   addSurveyStub: IAddSurvey

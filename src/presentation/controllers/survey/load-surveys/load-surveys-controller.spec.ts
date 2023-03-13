@@ -32,7 +32,7 @@ const makeLoadSurveys = (): ILoadSurveys => {
   return new LoadSurveysStub()
 }
 
-interface SutTypes {
+type SutTypes = {
   sut: LoadSurveysController
   loadSurveysStub: ILoadSurveys
 }
