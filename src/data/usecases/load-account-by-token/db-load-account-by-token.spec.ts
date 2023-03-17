@@ -1,8 +1,5 @@
-import { IDecrypter } from '../../protocols/criptography/decrypter'
-import { IAccountModel } from '../add-account/db-add-account-protocols'
+import { IAccountModel, IDecrypter, ILoadAccountByTokenRepository } from './db-load-account-by-token-protocols'
 import { DbLoadAccountByToken } from './db-load-account-by-token'
-import { ILoadAccountByTokenRepository } from '../../protocols/db/account/load-account-by-token-repository'
-
 const makeDecrypter = (): IDecrypter => {
   class DecrypterStub implements IDecrypter {
     async decrypt (value: string): Promise<string> {
