@@ -1,4 +1,4 @@
-import { ISurveyModel } from '../models/survey'
+import { ISurveyModel } from '@/domain/models/survey'
 
 export type IAddSurveyModel = Omit<ISurveyModel, '_id'>
 
