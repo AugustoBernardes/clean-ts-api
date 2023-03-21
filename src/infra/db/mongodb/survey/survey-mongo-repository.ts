@@ -1,10 +1,12 @@
+import { ILoadSurveyByIdRepository } from '@/data/usecases/load-survey-by-id/db-load-survey-by-id-protocols'
+import { ObjectId } from 'mongodb'
 import { IAddSurveyRepository } from '../../../../data/protocols/db/survey/add-survey-repository'
 import { ILoadSurveysRepository } from '../../../../data/protocols/db/survey/load-survey-repository'
 import { ISurveyModel } from '../../../../domain/models/survey'
 import { IAddSurveyModel } from '../../../../domain/usecases/add-survey'
 import { MongoHelper } from '../helpers/mongo-helper'
 
-export class SurveyMongoRepository implements IAddSurveyRepository, ILoadSurveysRepository {
+export class SurveyMongoRepository implements IAddSurveyRepository, ILoadSurveysRepository, ILoadSurveyByIdRepository {
   async add (surveyData: IAddSurveyModel): Promise<void> {
     const surveyCollection = await MongoHelper.getCollection('surveys')
     await surveyCollection.insertOne(surveyData)
@@ -14,5 +16,14 @@ export class SurveyMongoRepository implements IAddSurveyRepository, ILoadSurveys
     const surveyCollection = await MongoHelper.getCollection('surveys')
     const surveys = await surveyCollection.find().toArray() as unknown as ISurveyModel[]
     return surveys
+  }
+
+  async loadById (id: string): Promise<ISurveyModel | null> {
+    const surveyId = new ObjectId(id)
+    const surveyCollection = await MongoHelper.getCollection('surveys')
+    const survey = await surveyCollection.findOne({
+      _id: surveyId
+    }) as unknown as ISurveyModel
+    return survey
   }
 }
