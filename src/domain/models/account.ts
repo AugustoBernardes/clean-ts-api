@@ -4,8 +4,3 @@ export type IAccountModel = {
   email: string
   password: string
 }
-
-export type IAddAccountResponse = {
-  acknowledged: boolean
-  insertedId: string
-}

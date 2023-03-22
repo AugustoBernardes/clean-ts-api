@@ -1,5 +1,6 @@
-import { IAccountModel, IAddAccountModel, IHasher, IAddAccountRepository, IAddAccountResponse, ILoadAccountByEmailRepository } from './db-add-account-protocols'
+import { IAccountModel, IAddAccountModel, IHasher, IAddAccountRepository, ILoadAccountByEmailRepository } from './db-add-account-protocols'
 import { DbAddAccount } from './db-add-account'
+import { IInsertOneResponse } from '@/domain/models/insert-one-response'
 
 const makeHasher = (): IHasher => {
   class HasherStub implements IHasher {
@@ -13,7 +14,7 @@ const makeHasher = (): IHasher => {
 
 const makeAddAccountRepository = (): IAddAccountRepository => {
   class AddAccountRepositoryStub implements IAddAccountRepository {
-    async add (accountData: IAddAccountModel): Promise<IAddAccountResponse> {
+    async add (accountData: IAddAccountModel): Promise<IInsertOneResponse> {
       const fakeAccount = {
         acknowledged: true,
         insertedId: 'valid_id'
