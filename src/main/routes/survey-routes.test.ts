@@ -64,7 +64,6 @@ describe('Survey Routes', () => {
 
     test('Should return 204 on add survey with valid access token', async () => {
       const accessToken = await makeAccessToken()
-
       await request(app)
         .post('/api/surveys')
         .set('x-access-token', accessToken)
