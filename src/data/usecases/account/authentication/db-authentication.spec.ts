@@ -1,14 +1,14 @@
 import { DbAuthentication } from './db-authentication'
 import {
   IAccountModel,
-  AuthenticationModel,
+  IAuthenticationParams,
   IHashCompare,
   IEncrypter,
   ILoadAccountByEmailRepository,
   IUpdateAccessTokenRepository
 } from './db-authentication-protocols'
 
-const makeFakeAuthentication = (): AuthenticationModel => ({
+const makeFakeAuthentication = (): IAuthenticationParams => ({
   email: 'any_email@mail.com',
   password: 'any_password'
 })
