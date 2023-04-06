@@ -1,5 +1,6 @@
 import { ILoadSurveyByIdRepository, ISurveyModel } from './db-load-survey-by-id-protocols'
 import { DbLoadSurveyById } from './db-load-survey-by-id'
+import { throwError } from '@/domain/test/index'
 import MockDate from 'mockdate'
 
 const makeFakeSurvey = (): ISurveyModel => {
@@ -62,7 +63,7 @@ describe('DbLoadSurveysById', () => {
 
   test('Should throw if LoadSurveyByIdRepository throws', async () => {
     const { sut, loadSurveyByIdRepository } = makeSut()
-    jest.spyOn(loadSurveyByIdRepository, 'loadById').mockReturnValueOnce(new Promise((resolve, reject) => reject(new Error())))
+    jest.spyOn(loadSurveyByIdRepository, 'loadById').mockImplementationOnce(throwError)
     const promise = sut.loadById('any_id')
     await expect(promise).rejects.toThrow()
   })
