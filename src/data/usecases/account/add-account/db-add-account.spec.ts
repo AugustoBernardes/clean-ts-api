@@ -2,16 +2,7 @@ import { IAccountModel, IAddAccountParams, IHasher, IAddAccountRepository, ILoad
 import { DbAddAccount } from './db-add-account'
 import { IInsertOneResponse } from '@/domain/models/insert-one-response'
 import { mockAccountModel, mockAddAccountParams, throwError } from '@/domain/test/index'
-
-const makeHasher = (): IHasher => {
-  class HasherStub implements IHasher {
-    async hash (value: string): Promise<string> {
-      return await new Promise(resolve => resolve('hashed_password'))
-    }
-  }
-
-  return new HasherStub()
-}
+import { mockHasher } from '@/data/test'
 
 const makeAddAccountRepository = (): IAddAccountRepository => {
   class AddAccountRepositoryStub implements IAddAccountRepository {
@@ -48,7 +39,7 @@ type SutTypes = {
 }
 
 const makeSut = (): SutTypes => {
-  const hasherStub = makeHasher()
+  const hasherStub = mockHasher()
   const addAccountRepositoryStub = makeAddAccountRepository()
   const loadAccountByEmailRepositoryStub = makeLoadAccountByEmailRepository()
   const sut = new DbAddAccount(hasherStub, addAccountRepositoryStub, loadAccountByEmailRepositoryStub)

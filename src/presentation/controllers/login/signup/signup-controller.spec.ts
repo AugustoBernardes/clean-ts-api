@@ -3,11 +3,12 @@ import { SignUpController } from './signup-controller'
 import { EmailInUseError, MissingParamError, ServerError } from '@/presentation/errors'
 import { IAccountModel, IAddAccount, IAddAccountParams, IHttpRequest, IValidation, IAuthenticationParams, IAuthentication } from './signup-controller-protocols'
 import { badRequest, forbidden, ok, serverError } from '@/presentation/helpers/http/http-helper'
+import { mockAccountModel } from '@/domain/test'
 
 const makeAddAccount = (): IAddAccount => {
   class AddAccountStub implements IAddAccount {
     async add (account: IAddAccountParams): Promise<IAccountModel> {
-      return await new Promise(resolve => resolve(makeFakeAccount()))
+      return await new Promise(resolve => resolve(mockAccountModel()))
     }
   }
   return new AddAccountStub()
@@ -30,13 +31,6 @@ const makeValidation = (): IValidation => {
   }
   return new ValidationStub()
 }
-
-const makeFakeAccount = (): IAccountModel => ({
-  _id: 'valid_id',
-  name: 'valid_name',
-  email: 'valid_email@email.com',
-  password: 'valid_password'
-})
 
 const makeFakeRequest = (): IHttpRequest => ({
   body: {
