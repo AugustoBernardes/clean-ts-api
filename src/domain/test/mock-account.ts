@@ -1,5 +1,6 @@
 import { IAccountModel } from '@/domain/models/account'
 import { IAddAccountParams } from '@/domain/usecases/account/add-account'
+import { IInsertOneModel } from '../models/insert-one-model'
 
 export const mockAddAccountParams = (): IAddAccountParams => ({
   name: 'any_name',
@@ -12,4 +13,9 @@ export const mockAccountModel = (): IAccountModel => ({
   name: 'any_name',
   email: 'any_email@mail.com',
   password: 'hashed_password'
+})
+
+export const mockInsertOneAccount = (): IInsertOneModel => ({
+  acknowledged: true,
+  insertedId: 'any_id'
 })

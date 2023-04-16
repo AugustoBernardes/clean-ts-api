@@ -1,8 +1,6 @@
 import { IAddAccountParams } from '@/domain/usecases/account/add-account'
-import { IAccountModel } from '@/domain/models/account'
-import { IInsertOneResponse } from '@/domain/models/insert-one-response'
+import { IInsertOneModel } from '@/domain/models/insert-one-model'
 
 export interface IAddAccountRepository {
-  add: (accountData: IAddAccountParams) => Promise<IInsertOneResponse>
-  findById: (id: string) => Promise<IAccountModel>
+  add: (accountData: IAddAccountParams) => Promise<IInsertOneModel>
 }

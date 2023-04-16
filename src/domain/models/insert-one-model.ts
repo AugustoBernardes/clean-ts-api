@@ -1,4 +1,4 @@
-export type IInsertOneResponse = {
+export type IInsertOneModel = {
   acknowledged: boolean
   insertedId: string
 }

@@ -1,25 +1,26 @@
 import { IAccountModel, IAddAccountParams, IHasher, IAddAccountRepository, ILoadAccountByEmailRepository } from './db-add-account-protocols'
 import { DbAddAccount } from './db-add-account'
-import { IInsertOneResponse } from '@/domain/models/insert-one-response'
-import { mockAccountModel, mockAddAccountParams, throwError } from '@/domain/test/index'
+import { IInsertOneModel } from '@/domain/models/insert-one-model'
+import { mockAccountModel, mockAddAccountParams, mockInsertOneAccount, throwError } from '@/domain/test/index'
 import { mockHasher } from '@/data/test'
+import { IFindAccountByIdRepository } from '@/data/protocols/db/account/find-account-by-id-repository'
 
 const makeAddAccountRepository = (): IAddAccountRepository => {
   class AddAccountRepositoryStub implements IAddAccountRepository {
-    async add (accountData: IAddAccountParams): Promise<IInsertOneResponse> {
-      const fakeAccount = {
-        acknowledged: true,
-        insertedId: 'any_id'
-      }
-      return await new Promise(resolve => resolve(fakeAccount))
+    async add (accountData: IAddAccountParams): Promise<IInsertOneModel> {
+      return await new Promise(resolve => resolve(mockInsertOneAccount()))
     }
+  }
+  return new AddAccountRepositoryStub()
+}
 
+const makeFindAccountByIdRepository = (): IFindAccountByIdRepository => {
+  class FindAccountByIdRepositoryStub implements IFindAccountByIdRepository {
     async findById (id: string): Promise<IAccountModel> {
       return await new Promise(resolve => resolve(mockAccountModel()))
     }
   }
-
-  return new AddAccountRepositoryStub()
+  return new FindAccountByIdRepositoryStub()
 }
 
 const makeLoadAccountByEmailRepository = (): ILoadAccountByEmailRepository => {
@@ -35,18 +36,21 @@ type SutTypes = {
   sut: DbAddAccount
   hasherStub: IHasher
   addAccountRepositoryStub: IAddAccountRepository
+  findAccountByIdRepositoryStub: IFindAccountByIdRepository
   loadAccountByEmailRepositoryStub: ILoadAccountByEmailRepository
 }
 
 const makeSut = (): SutTypes => {
   const hasherStub = mockHasher()
   const addAccountRepositoryStub = makeAddAccountRepository()
+  const findAccountByIdRepositoryStub = makeFindAccountByIdRepository()
   const loadAccountByEmailRepositoryStub = makeLoadAccountByEmailRepository()
-  const sut = new DbAddAccount(hasherStub, addAccountRepositoryStub, loadAccountByEmailRepositoryStub)
+  const sut = new DbAddAccount(hasherStub, addAccountRepositoryStub, findAccountByIdRepositoryStub, loadAccountByEmailRepositoryStub)
   return {
     sut,
     hasherStub,
     addAccountRepositoryStub,
+    findAccountByIdRepositoryStub,
     loadAccountByEmailRepositoryStub
   }
 }
@@ -92,6 +96,28 @@ describe('DbAddAccount Usecase', () => {
     const { sut, addAccountRepositoryStub } = makeSut()
 
     jest.spyOn(addAccountRepositoryStub, 'add').mockImplementationOnce(throwError)
+
+    const promise = sut.add(mockAddAccountParams())
+    await expect(promise).rejects.toThrow()
+  })
+
+  test('Should call FindAccountByIdRepository with correct values', async () => {
+    const { sut, findAccountByIdRepositoryStub } = makeSut()
+    const findByIdSpy = jest.spyOn(findAccountByIdRepositoryStub, 'findById')
+    const accountData = {
+      name: 'any_name',
+      email: 'any_email@mail.com',
+      password: 'any_password'
+    }
+
+    await sut.add(accountData)
+    expect(findByIdSpy).toHaveBeenCalledWith('any_id')
+  })
+
+  test('Should throw if FindAccountByIdRepository throws', async () => {
+    const { sut, findAccountByIdRepositoryStub } = makeSut()
+
+    jest.spyOn(findAccountByIdRepositoryStub, 'findById').mockImplementationOnce(throwError)
 
     const promise = sut.add(mockAddAccountParams())
     await expect(promise).rejects.toThrow()
