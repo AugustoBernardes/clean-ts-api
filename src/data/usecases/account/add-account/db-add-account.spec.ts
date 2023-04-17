@@ -1,29 +1,10 @@
-import { IAccountModel, IAddAccountParams, IHasher, IAddAccountRepository, ILoadAccountByEmailRepository } from './db-add-account-protocols'
+import { IAccountModel, IHasher, IAddAccountRepository, ILoadAccountByEmailRepository } from './db-add-account-protocols'
 import { DbAddAccount } from './db-add-account'
-import { IInsertOneModel } from '@/domain/models/insert-one-model'
-import { mockAccountModel, mockAddAccountParams, mockInsertOneAccount, throwError } from '@/domain/test/index'
-import { mockHasher } from '@/data/test'
+import { mockAccountModel, mockAddAccountParams, throwError } from '@/domain/test/index'
+import { mockAddAccountRepository, mockFindAccountByIdRepository, mockHasher } from '@/data/test'
 import { IFindAccountByIdRepository } from '@/data/protocols/db/account/find-account-by-id-repository'
 
-const makeAddAccountRepository = (): IAddAccountRepository => {
-  class AddAccountRepositoryStub implements IAddAccountRepository {
-    async add (accountData: IAddAccountParams): Promise<IInsertOneModel> {
-      return await new Promise(resolve => resolve(mockInsertOneAccount()))
-    }
-  }
-  return new AddAccountRepositoryStub()
-}
-
-const makeFindAccountByIdRepository = (): IFindAccountByIdRepository => {
-  class FindAccountByIdRepositoryStub implements IFindAccountByIdRepository {
-    async findById (id: string): Promise<IAccountModel> {
-      return await new Promise(resolve => resolve(mockAccountModel()))
-    }
-  }
-  return new FindAccountByIdRepositoryStub()
-}
-
-const makeLoadAccountByEmailRepository = (): ILoadAccountByEmailRepository => {
+const mockLoadAccountByEmailRepository = (): ILoadAccountByEmailRepository => {
   class LoadAccountByEmailRepositoryStub implements ILoadAccountByEmailRepository {
     async loadByEmail (email: string): Promise<IAccountModel | null> {
       return await new Promise(resolve => resolve(null))
@@ -42,9 +23,9 @@ type SutTypes = {
 
 const makeSut = (): SutTypes => {
   const hasherStub = mockHasher()
-  const addAccountRepositoryStub = makeAddAccountRepository()
-  const findAccountByIdRepositoryStub = makeFindAccountByIdRepository()
-  const loadAccountByEmailRepositoryStub = makeLoadAccountByEmailRepository()
+  const addAccountRepositoryStub = mockAddAccountRepository()
+  const findAccountByIdRepositoryStub = mockFindAccountByIdRepository()
+  const loadAccountByEmailRepositoryStub = mockLoadAccountByEmailRepository()
   const sut = new DbAddAccount(hasherStub, addAccountRepositoryStub, findAccountByIdRepositoryStub, loadAccountByEmailRepositoryStub)
   return {
     sut,
