@@ -6,6 +6,7 @@ import { ILoadAccountByEmailRepository } from '@/data/protocols/db/account/load-
 import { IAccountModel } from '@/domain/models/account'
 import { IFindAccountByIdRepository } from '@/data/protocols/db/account/find-account-by-id-repository'
 import { ILoadAccountByTokenRepository } from '@/data/protocols/db/account/load-account-by-token-repository'
+import { IUpdateAccessTokenRepository } from '@/data/usecases/account/authentication/db-authentication-protocols'
 
 export const mockAddAccountRepository = (): IAddAccountRepository => {
   class AddAccountRepositoryStub implements IAddAccountRepository {
@@ -41,4 +42,13 @@ export const mockLoadAccountByTokenRepository = (): ILoadAccountByTokenRepositor
     }
   }
   return new LoadAccountByTokenRepository()
+}
+
+export const mockUpdateAccessTokenRepository = (): IUpdateAccessTokenRepository => {
+  class UpdateAccessTokenRepositoryStub implements IUpdateAccessTokenRepository {
+    async updateAccessToken (id: string, token: string): Promise<void> {
+      return await new Promise(resolve => resolve())
+    }
+  }
+  return new UpdateAccessTokenRepositoryStub()
 }
