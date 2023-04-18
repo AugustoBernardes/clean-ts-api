@@ -1,6 +1,6 @@
 import { SaveSurveyResultController } from './save-survey-result-controller'
 import { Controller, ISaveSurveyResultParams, ISaveSurveyResult, ISurveyResultModel, IHttpRequest, ILoadSurveyById, ISurveyModel, forbidden, InvalidParamError, serverError, ok } from './save-survey-result-controller-protocols'
-import { throwError } from '@/domain/test/index'
+import { mockSurveyModel, throwError } from '@/domain/test/index'
 import MockDate from 'mockdate'
 
 const makeFakeRequest = (): IHttpRequest => ({
@@ -21,22 +21,10 @@ const makeFakeSurveyResult = (): ISurveyResultModel => ({
   date: new Date()
 })
 
-const makeFakeSurvey = (): ISurveyModel => {
-  return {
-    _id: 'any_survey_id',
-    question: 'any_question',
-    answers: [{
-      image: 'any_image',
-      answer: 'any_answer'
-    }],
-    date: new Date()
-  }
-}
-
 const makeLoadSurveyById = (): ILoadSurveyById => {
   class LoadSurveyByIdStub implements ILoadSurveyById {
     async loadById (id: string): Promise<ISurveyModel | null> {
-      return makeFakeSurvey()
+      return mockSurveyModel()
     }
   }
   return new LoadSurveyByIdStub()
