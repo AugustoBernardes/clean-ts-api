@@ -1,3 +1,4 @@
+import { IAddSurveyParams } from '@/domain/usecases/survey/add-survey'
 import { ISurveyModel } from '@/domain/models/survey'
 
 export const mockSurveyModel = (): ISurveyModel => {
@@ -32,3 +33,12 @@ export const mockSurveysModels = (): ISurveyModel[] => {
     date: new Date()
   }]
 }
+
+export const mockAddSurveyParams = (): IAddSurveyParams => ({
+  question: 'any_question',
+  answers: [{
+    image: 'any_image',
+    answer: 'any_answer'
+  }],
+  date: new Date()
+})
