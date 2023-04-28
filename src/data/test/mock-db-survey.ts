@@ -8,7 +8,7 @@ import { ILoadSurveysRepository } from '@/data/protocols/db/survey/load-survey-r
 export const mockAddSurveyRepository = (): IAddSurveyRepository => {
   class AddSurveyRepositoryStub implements IAddSurveyRepository {
     async add (surveyData: IAddSurveyParams): Promise<void> {
-      return await new Promise(resolve => resolve())
+      return await Promise.resolve()
     }
   }
   return new AddSurveyRepositoryStub()

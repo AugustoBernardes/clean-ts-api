@@ -11,7 +11,7 @@ import { IUpdateAccessTokenRepository } from '@/data/usecases/account/authentica
 export const mockAddAccountRepository = (): IAddAccountRepository => {
   class AddAccountRepositoryStub implements IAddAccountRepository {
     async add (accountData: IAddAccountParams): Promise<IInsertOneModel> {
-      return await new Promise(resolve => resolve(mockInsertOneAccount()))
+      return await Promise.resolve(mockInsertOneAccount())
     }
   }
   return new AddAccountRepositoryStub()
@@ -20,7 +20,7 @@ export const mockAddAccountRepository = (): IAddAccountRepository => {
 export const mockLoadAccountByEmailRepository = (): ILoadAccountByEmailRepository => {
   class LoadAccountByEmailRepositoryStub implements ILoadAccountByEmailRepository {
     async loadByEmail (email: string): Promise<IAccountModel | null> {
-      return await new Promise(resolve => resolve(mockAccountModel()))
+      return await Promise.resolve(mockAccountModel())
     }
   }
   return new LoadAccountByEmailRepositoryStub()
@@ -29,7 +29,7 @@ export const mockLoadAccountByEmailRepository = (): ILoadAccountByEmailRepositor
 export const mockFindAccountByIdRepository = (): IFindAccountByIdRepository => {
   class FindAccountByIdRepositoryStub implements IFindAccountByIdRepository {
     async findById (id: string): Promise<IAccountModel> {
-      return await new Promise(resolve => resolve(mockAccountModel()))
+      return await Promise.resolve(mockAccountModel())
     }
   }
   return new FindAccountByIdRepositoryStub()
@@ -47,7 +47,7 @@ export const mockLoadAccountByTokenRepository = (): ILoadAccountByTokenRepositor
 export const mockUpdateAccessTokenRepository = (): IUpdateAccessTokenRepository => {
   class UpdateAccessTokenRepositoryStub implements IUpdateAccessTokenRepository {
     async updateAccessToken (id: string, token: string): Promise<void> {
-      return await new Promise(resolve => resolve())
+      return await Promise.resolve()
     }
   }
   return new UpdateAccessTokenRepositoryStub()

@@ -7,7 +7,7 @@ import { ILoadAccountByToken } from '@/domain/usecases/account/load-account-by-t
 export const mockAddAccount = (): IAddAccount => {
   class AddAccountStub implements IAddAccount {
     async add (account: IAddAccountParams): Promise<IAccountModel> {
-      return await new Promise(resolve => resolve(mockAccountModel()))
+      return await Promise.resolve(mockAccountModel())
     }
   }
   return new AddAccountStub()
