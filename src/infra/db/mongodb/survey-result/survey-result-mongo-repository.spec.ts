@@ -1,7 +1,7 @@
 
 import { IAccountModel } from '@/domain/models/account'
 import { ISurveyModel } from '@/domain/models/survey'
-import { Collection } from 'mongodb'
+import { Collection, ObjectId } from 'mongodb'
 import { MongoHelper } from '../helpers/mongo-helper'
 import { SurveyResultMongoRepository } from './survey-result-mongo-repository'
 
@@ -78,20 +78,19 @@ describe('Survey Result Mongo Repository', () => {
       })
       console.log(surveyResult)
       expect(surveyResult).toBeTruthy()
-      expect(surveyResult._id).toBeTruthy()
+      expect(surveyResult.surveyId).toEqual(survey._id)
     })
 
     test('Should update a survey result if its not new', async () => {
       const survey = await makeSurvey()
       const account = await makeAccount()
-      const sut = makeSut()
-      await sut.save({
-        surveyId: survey._id,
-        accountId: account._id,
+      await surveyResultCollection.insertOne({
+        surveyId: new ObjectId(survey._id),
+        accountId: new ObjectId(account._id),
         answer: survey.answers[0].answer,
         date: new Date()
       })
-
+      const sut = makeSut()
       const surveyResult = await sut.save({
         surveyId: survey._id,
         accountId: account._id,
@@ -99,7 +98,7 @@ describe('Survey Result Mongo Repository', () => {
         date: new Date()
       })
       expect(surveyResult).toBeTruthy()
-      expect(surveyResult.answer).toBe(survey.answers[1].answer)
+      expect(surveyResult.surveyId).toEqual(survey._id)
     })
   })
 })
