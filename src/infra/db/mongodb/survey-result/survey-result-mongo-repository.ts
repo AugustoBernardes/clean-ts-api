@@ -51,7 +51,6 @@ export class SurveyResultMongoRepository implements ISaveSurveyResultRepository,
         }
       }
     ]) as unknown as { value: IFindSurveyResultModel }
-    console.log(res)
     return res.value
   }
 }

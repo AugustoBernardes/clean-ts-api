@@ -1,4 +1,4 @@
-import { ISurveyResultModel } from '@/domain/models/survey-result'
+import { IFindSurveyResultModel, ISurveyResultModel } from '@/domain/models/survey-result'
 import { ISaveSurveyResultParams } from '@/domain/usecases/survey-result/save-survey-result'
 
 export const mockSaveSurveyResultParams = (): ISaveSurveyResultParams => ({
@@ -14,4 +14,10 @@ export const mockSurveyResultModel = (): ISurveyResultModel => ({
   accountId: 'any_account_id',
   answer: 'any_answer_id',
   date: new Date()
+})
+
+export const mockResultSurveyById = (): IFindSurveyResultModel => ({
+  answer: 'any_id',
+  count: 1,
+  percentage: 50
 })
