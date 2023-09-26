@@ -1,5 +1,5 @@
 import { IFindSurveyResultModel } from '@/domain/models/survey-result'
-import { IFindResultBySurveyId, IFindSurveyResultParams } from '@/domain/usecases/survey-result/find-survey-result'
+import { IFindResultBySurveyId, IFindSurveyResultParams } from './db-find-survey-result-protocols'
 
 export class DbFindSurveyResult implements IFindResultBySurveyId {
   constructor (private readonly findSurveyResultRepository: IFindResultBySurveyId) {}
