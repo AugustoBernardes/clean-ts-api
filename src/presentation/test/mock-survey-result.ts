@@ -14,7 +14,7 @@ export const mockSaveSurveyResult = (): ISaveSurveyResult => {
 
 export const mockFindResultBySurveyId = (): IFindResultBySurveyId => {
   class FindResultBySurveyIdStub implements IFindResultBySurveyId {
-    async findSurveyResult (data: IFindSurveyResultParams): Promise<IFindSurveyResultModel> {
+    async findSurveyResult (data: IFindSurveyResultParams): Promise<IFindSurveyResultModel[]> {
       return mockResultSurveyById()
     }
   }

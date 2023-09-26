@@ -16,8 +16,8 @@ export const mockSurveyResultModel = (): ISurveyResultModel => ({
   date: new Date()
 })
 
-export const mockResultSurveyById = (): IFindSurveyResultModel => ({
+export const mockResultSurveyById = (): IFindSurveyResultModel[] => ([{
   answer: 'any_id',
   count: 1,
   percentage: 50
-})
+}])

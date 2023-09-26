@@ -5,5 +5,5 @@ export type IFindSurveyResultParams = {
 }
 
 export interface IFindResultBySurveyId {
-  findSurveyResult: (data: IFindSurveyResultParams) => Promise<IFindSurveyResultModel>
+  findSurveyResult: (data: IFindSurveyResultParams) => Promise<IFindSurveyResultModel[]>
 }

@@ -22,7 +22,7 @@ export class SurveyResultMongoRepository implements ISaveSurveyResultRepository,
   }
 
   // @TODO: Refactor and create e2e tests
-  async findSurveyResult (data: IFindSurveyResultParams): Promise<IFindSurveyResultModel> {
+  async findSurveyResult (data: IFindSurveyResultParams): Promise<IFindSurveyResultModel[]> {
     const surveyResultsCollection = await MongoHelper.getCollection('surveyResults')
     const res = await surveyResultsCollection.aggregate([
       { $match: { surveyId: new ObjectId(data.surveyId) } },
@@ -50,7 +50,7 @@ export class SurveyResultMongoRepository implements ISaveSurveyResultRepository,
           percentage: { $multiply: [{ $divide: ['$results.count', '$total'] }, 100] }
         }
       }
-    ]) as unknown as { value: IFindSurveyResultModel }
+    ]) as unknown as { value: IFindSurveyResultModel[] }
     return res.value
   }
 }
