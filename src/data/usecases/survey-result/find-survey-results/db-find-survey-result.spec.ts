@@ -1,6 +1,7 @@
 import { mockFindSurveyResultRepositoryStub } from '@/data/test'
 import { DbFindSurveyResult } from './db-find-survey-result'
 import { IFindSurveyResultRepository } from './db-find-survey-result-protocols'
+import { throwError } from '@/domain/test'
 
 type SutTypes = {
   sut: DbFindSurveyResult
@@ -22,5 +23,12 @@ describe('DbLoadSurveyResult useCase', () => {
     const loadByIdSpy = jest.spyOn(findSurveyResultRepositoryStub, 'findSurveyResult')
     await sut.findSurveyResult({ surveyId: 'any_survey_id' })
     expect(loadByIdSpy).toHaveBeenCalledWith({ surveyId: 'any_survey_id' })
+  })
+
+  test('Should throw if FindSurveyResultRepository throws', async () => {
+    const { sut, findSurveyResultRepositoryStub } = makeSut()
+    jest.spyOn(findSurveyResultRepositoryStub, 'findSurveyResult').mockImplementationOnce(throwError)
+    const promise = sut.findSurveyResult({ surveyId: 'any_survey_id' })
+    await expect(promise).rejects.toThrow()
   })
 })
