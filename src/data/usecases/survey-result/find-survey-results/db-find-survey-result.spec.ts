@@ -1,17 +1,6 @@
-import { IFindSurveyResultModel } from '@/domain/models/survey-result'
-import { mockResultSurveyById } from '@/domain/test'
+import { mockFindSurveyResultRepositoryStub } from '@/data/test'
 import { DbFindSurveyResult } from './db-find-survey-result'
-import { IFindSurveyResultRepository, IFindSurveyResultParams } from './db-find-survey-result-protocols'
-
-const mockFindSurveyResultRepositoryStub = (): IFindSurveyResultRepository => {
-  class FindSurveyResultRepositoryStub implements IFindSurveyResultRepository {
-    async findSurveyResult (data: IFindSurveyResultParams): Promise<IFindSurveyResultModel[]> {
-      return await Promise.resolve(mockResultSurveyById())
-    }
-  }
-
-  return new FindSurveyResultRepositoryStub()
-}
+import { IFindSurveyResultRepository } from './db-find-survey-result-protocols'
 
 type SutTypes = {
   sut: DbFindSurveyResult
