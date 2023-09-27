@@ -21,7 +21,6 @@ export class SurveyResultMongoRepository implements ISaveSurveyResultRepository,
     return res.value
   }
 
-  // @TODO: Refactor and create e2e tests
   async findSurveyResult (data: IFindSurveyResultParams): Promise<IFindSurveyResultModel[]> {
     const surveyResultsCollection = await MongoHelper.getCollection('surveyResults')
     const res = await surveyResultsCollection.aggregate([
