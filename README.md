@@ -2,7 +2,7 @@
 
 ## Description
 
-This project is a data management system implemented using MongoDB as the database and developed in TypeScript with Node.js. The source code follows SOLID principles (Single Responsibility, Open/Closed, Interface Segregation, Dependency Inversion), adopting an object-oriented approach.
+This project is a system made to create surveys and register users survey results, implemented using MongoDB as the database and developed in TypeScript with Node.js. The source code follows SOLID principles (Single Responsibility, Open/Closed, Interface Segregation, Dependency Inversion), adopting an object-oriented approach.
 
 Furthermore, TDD (Test-Driven Development) concepts were applied to ensure code quality from the outset. Tests were created before actual implementation, ensuring that each component of the system meets predefined requirements.
 
